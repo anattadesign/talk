@@ -1,6 +1,5 @@
 const appURL = () => {
-	const protocol = "http" + (location.hostname == "localhost" ? "" : "s") + "://";
-	return protocol + location.hostname + (location.hostname == "localhost" ? ":3000" : "");
+	return location.protocol + "//" + location.hostname + "/" + "talk";
 };
 const getRoomName = () => {
 	let roomName = location.pathname.substring(1);
@@ -50,7 +49,7 @@ var peerMediaElements = {}; /* keep track of our <video> tags, indexed by peer_i
 
 function init() {
 	console.log("Connecting to signaling server");
-	signalingSocket = io(SIGNALING_SERVER);
+	signalingSocket = io(SIGNALING_SERVER, { path: '/talk/socket.io/'});
 	signalingSocket = io();
 
 	signalingSocket.on("connect", function() {

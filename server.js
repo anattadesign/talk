@@ -3,10 +3,10 @@ const path = require('path');
 const http = require('http');
 const app = express();
 const server = http.createServer(app);
-const io = require('socket.io').listen(server);
+const io = require('socket.io').listen(server, { path: '/talk/socket.io'});
 
 // Server all the static files from www folder
-app.use(express.static(path.join(__dirname, 'www')));
+app.use('/talk/', express.static(path.join(__dirname, 'www')));
 
 // Get PORT from env variable else assign 3000 for development
 const PORT = process.env.PORT || 3000;
@@ -14,10 +14,10 @@ server.listen(PORT, null, function() {
 	console.log('Listening on port ' + PORT);
 });
 
-app.get('/legal', (req, res) => res.sendFile(path.join(__dirname, 'www/legal.html')));
+app.get('/talk/legal', (req, res) => res.sendFile(path.join(__dirname, 'www/legal.html')));
 
 // All URL patterns should served with the same file.
-app.get(['/', '/:room'], (req, res) => res.sendFile(path.join(__dirname, 'www/index.html')));
+app.get(['/talk/:room'], (req, res) => res.sendFile(path.join(__dirname, 'www/main.html')));
 
 const channels = {};
 const sockets = {};
